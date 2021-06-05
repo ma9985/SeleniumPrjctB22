@@ -10,6 +10,7 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class DropdownPractices {
@@ -22,10 +23,7 @@ public class DropdownPractices {
         driver.manage().window().maximize();
         driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
         driver.get("http://practice.cybertekschool.com/dropdown");
-
-
     }
-
 
     @Test
     public void tc1_simple_dropdown_test() {
@@ -64,7 +62,6 @@ public class DropdownPractices {
         stateDropdown.selectByIndex(5);
         //stateDropdown.selectByVisibleText("California");
 
-
         //6. Verify final selected option is California.
         //Use all Select options. (visible text, value, index)
 
@@ -75,9 +72,71 @@ public class DropdownPractices {
 
     }
 
+    @Test
+    public void yearTest() throws InterruptedException {
+        WebElement yearLocator = driver.findElement(By.xpath("//select[@id='year']"));
+        Select selectYear = new Select(yearLocator);
+        selectYear.selectByVisibleText("1922");
+        String actualYear = selectYear.getFirstSelectedOption().getText();
+        //String expectedYear = "1922";
+        Assert.assertEquals(actualYear, "1922");
+
+    }
+
+    @Test
+    public void monthTest() throws InterruptedException {
+
+        WebElement monthLocator = driver.findElement(By.xpath("//select[@id='month']"));
+        Select selectMonth = new Select(monthLocator);
+        selectMonth.selectByValue("11");
+        String actualMonth = selectMonth.getFirstSelectedOption().getText();
+        Assert.assertEquals(actualMonth, "December");
+    }
+
+    @Test
+    public void dayTest() throws InterruptedException {
+
+        WebElement dayLocator = driver.findElement(By.xpath("//select[@id='day']"));
+        Select selectDay = new Select(dayLocator);
+        selectDay.selectByIndex(0);
+        String actualDay = selectDay.getFirstSelectedOption().getText();
+        String expectedDay = "1";
+        Assert.assertEquals(actualDay, expectedDay);
+        System.out.println(actualDay);
+    }
+
+@Test
+public void allValuesSelection () {
+   WebElement languagesDropdown = driver.findElement(By.xpath("//select[@name='Languages']"));
+    Select select = new Select(languagesDropdown);
+    List<WebElement> allOptions = select.getOptions();
+
+    for (int i = 0; i < allOptions.size(); i++) {
+        select.selectByIndex(i);
+        System.out.println(select.getAllSelectedOptions().get(i).getText());
+    }
+    select.deselectAll();
+
+}
+
+@Test
+    public void NonSelectDropdown() {
+        WebElement nonDropdown = driver.findElement(By.xpath("//a[@id='dropdownMenuLink']"));
+        nonDropdown.click();
+
+        WebElement facebook = driver.findElement(By.xpath("//a[.='Facebook']"));
+        facebook.click();
+
+        String expectedDropdown = "Facebook - Log In or Sign Up";
+        String actualDropdown = driver.getTitle();
+
+        Assert.assertEquals(expectedDropdown, actualDropdown);
+
+
+}
     @AfterClass
     public void teardownClass() throws InterruptedException {
-        Thread.sleep(5000);
+        Thread.sleep(2000);
         driver.close();
 
     }
