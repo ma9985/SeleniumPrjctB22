@@ -24,18 +24,17 @@ public class Table_Task3 {
         driver = WebDriverFactory.getDriver(browser);
         driver.manage().window().maximize();
         driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
-        driver.get(url);
+
         // below code is same as above
         //driver.get(ConfigurationReader.getProperty("dataTablesUrl"));
     }
     @Test
     public void task3_return_tims_due_amount(){
-        ////table[@id='table1']//td[.='Tim'] --> this locator locates Tim's cell regardless
-        // of which row he is in
-        //2.	Locate first table and verify Tim has due amount of “$50”
-        // 1st way: //table[@id='table1']//td[.='Tim']/../td[4]
-        // 2nd way: //table[@id='table1']//td[.='Tim']/following-sibling::td[2]
+        String url = ConfigurationReader.getProperty("browser");
+        driver.get(url);
+
         WebElement timsDueAmountCell = driver.findElement(By.xpath("//table[@id='table1']//td[.='Tim']/../td[4]"));
+
         System.out.println("timsDueAmountCell = " + timsDueAmountCell.getText());
         String actualTimResult = timsDueAmountCell.getText();
         String expectedTimResult = "$50.00";
